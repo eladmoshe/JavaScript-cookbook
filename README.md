@@ -26,6 +26,67 @@ As diagram 1 suggests SPA became a huge trend in 2012 even though the term was c
 In this book we will try to come up with solutions and recipes regarding how to manage and develop an SPA or even a generic large scale JavaScript project effectively.
 ![Diagram 1: Single Page Application over Google Trends (December 2012)](https://raw.github.com/eladmoshe/JavaScript-cookbook/master/images/SPA-GoogleTrendDec2012.png)
 
+This book starts with a ‘recipe’ for an education plan for non-javascript developers.
+The second chapter describes what are the key roles that has to appointed and how to structure the teams.
+The third chapter discusses what architectural obstacles such a project introduces and how existing JavaScript FWs can solve those obstacles, one by one.
+The fourth chapter suggests that in order to avoid most development obstacles that such a dynamic and flexible programming language introduces(such as bugs, regression etc..), the group should utilizes the TDD paradigm, this chapter introduces the TDD methodology, testing tools and some best practices. 
+Later on, the fifth chapter covers how to develop in an efficient fashion and how to generate maintainable code by utilizing generic JavaScript best practices. This chapter also discusses how one should organize the file system, which IDE is recommended and additional best practices.
+The last chapter recommends how to structure the build pipeline which consists of running the tests-set, concatenate and minify JavaScript and CSS assets and how to produce a deployable file.
+
+Let’s start with defining what large scale javascript project really is:
+
+###Large Scale JavaScript Project
+Large-scale JavaScript applications are applications that mostly align to 3 properties [source](http://addyosmani.com/largescalejavascript/):
+1. Most heavy lifting of data manipulation and display falls to the browser.
+2. Non-trivial in terms of functional/system requirements. 
+3. Requires significant number of developers(dozens) 
+
+It seems like developing SPA is a complicated task, lets discuss why should one develop an SPA from an historical perspective.
+
+###Historical Perspective
+In the last few years it became clear that in order to produce rich internet application(desktop-like in terms of performance and usability) the browser must take a bolder role in terms of execution.
+
+Desktop applications don’t let their backend to generate the pages that they are displaying, they also run most of the logic on the client side, they let the server side to be a shared-data broker. there are two reasons for that:
+1. the network is the main bottleneck in terms of door to door timing 
+  1. sending the entire pages over the network is heavy
+  2. backends that contains business logic forces the application to send requests to the server via the network
+2. Replacing one generated page to another is unnatural to the human eye
+  1. it affects usability
+  2. it takes more time to generate the entire page again rather than generating the specific region
+As a side effect the code is executed is getting distributed to the different powerful clients which tremendously decrease the need to abuse your backend servers.
+
+In order to achieve RIA abilities one should place most of the business logic and most of the page generation processes to the client side.
+The rule of thumb is that only two types of business logic should reside and get executed by the backend server: [1] manipulation of shared data (e.g. batch analysis). [2] secretive logic, either in terms of intellectual property or in terms of security.
+Regarding page generation: in the past the common approach was to generate the pages on the server side, mostly by utilizing server-side templates engines such as [PHP](http://en.wikipedia.org/wiki/PHP), [JSP](http://en.wikipedia.org/wiki/JavaServer_Pages) and [ASP](http://en.wikipedia.org/wiki/Active_Server_Pages). 
+
+Some organizations such as Microsoft, Sun and Adobe took the desktop approach back in the early 2000 where they were utilizing browser plug-ins in order to generate pages and execute large amount of code on the client side, this has started with [ActiveX](http://en.wikipedia.org/wiki/ActiveX) continued with [Java Applets](http://en.wikipedia.org/wiki/Java_applet) solutions and proceeded with [Silverlight](http://www.microsoft.com/silverlight/) and [Flex](http://en.wikipedia.org/wiki/Apache_Flex ).
+Yet the plug-in approach didn’t take off, there were a lot of bugs in the integration layer between the browser and the plug-in, memory leaks were a common phenomena and  security became even larger concern. recently Adobe transferred Flex to the apache foundation since it could not back it up business-wise, Apple announce that Java Applets are too risky in terms of security and for that reason none of their devices will Java Applets anymore [(source)2](http://9to5mac.com/2012/10/17/apple-removes-java-applet-plugin-from-os-x-continuing-push-for-plugin-free-web/
+). ActiveXs are working only on windows machines which make them less useful.
+
+On the other hand, in the last few years the modern browser can execute large amount of complicated JavaScript code and generate pages by it self. this is all possible due to a radical transformation of the browser Javascript virtual machine, the rendering engine and the browser engine it self. 
+Chrome was the first browser that came up with a strong VM that could execute JavaScript almost as fast as the JVM executes Java bytecode. since then all the other browsers got aligned due to the browser wars and nowadays they all advise reasonable performance. 
+
+The single page application is the most popular paradigm which supports large amount of client side processing , elimination of backend page generation and therefore an upgraded user experience.
+
+###Single Page Application:
+Traditional web pages were composed of mostly static HTML content. JavaScript allowed to add some dynamic behavior to those pages. As the web evolved, [AJAX](http://en.wikipedia.org/wiki/Ajax_(programming)) enabled updating just parts of the web page content, without reloading the entire page. As we explained above, this allowed better performance and a new level of interactivity, as web pages began to resemble desktop applications. 
+Single Page Application (SPA) paradigm represents the next level of this evolution. in SPA, when the browser first requests the page of an application, it receives some static HTML file that instructs to download the static JavaScript files of the application. Those files define the behavior of the entire application. This resembles desktop applications, where the user starts the application, the entire code is usually loaded into memory. From this point on, the only calls to the server are in order to fetch data, but not behavior code. This paradigm allows very high responsiveness of the application, as the code runs locally. It also frees the developers from  modeling constraints. 
+As we discussed the major performance bottleneck in traditional web applications is the network, SPA solves it by reducing the size of the HTTP responses (it contains only data instead of the entire page). Moreover since the page is no longer being generated on the server-side, the page is static and can be cached internally or even on a [CDN](http://en.wikipedia.org/wiki/Content_delivery_network). 
+Since most of the logic runs on the client side, the backend is transformed into a data provider which usually get treated as an API server, this API server can start serving also different client such as mobile devices or even 3rd party applications that are allowed to use your application’s API.
+Another advantage is the ability to go offline, since most of the logic is ‘written’ on static resources, it’s easy for the browser to cache those and run it offline (the developer will have to implement some HTML5 requirements in order to make the application truly offline).
+
+There are also some disadvantages:
+* **Routing**: there is only one URL for the entire application, which causes the inability to browse to a specific ‘virtual page’ and improper behavior of the back button 
+  * Chapter 5 shows how this problem can be solved by using an anchor based solution
+* **Complex client side development**: mostly since this is a new ground yet more specifically it’s unclear how to split logics into modules, how to organize the file system, which tools support the familiar process that most groups conduct for server-side development etc..  
+  * This entire book aims to provide recipes and best practices that will make the development process much easier
+* **Javascript Frameworks are still evolving**: there are huge amount of JavaScript frameworks, some of those are immature, some of those have small communities and unreadable code
+  * Chapter 5 will cover what types of FWs one need and which exact FWs are recommended in the light of stability and large community. 
+* **The JavaScript programming language**: the dynamic and flexible nature of javascript causes insecurity in terms of the quality of code
+Chapter 4 introduces the TDD paradigm which upon implementation increases the quality of code dramatically, Chapter 6 discusses best practices for coding which upon following should decreases the number of defects. 
+The dynamic and flexible nature of Javascript can also be treated as an advantage, it decreases the size of code, it enables rapid development and the existence of many of the FWs that are introduced in chapter 5.     
+* **SEO difficulties**: since it’s harder for search engines to understand/parse SPAs - search engines usually read only the initial static file which doesn’t include any real data.
+
 
 
 
