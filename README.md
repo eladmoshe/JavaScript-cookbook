@@ -24,6 +24,9 @@ A cookbook for developing a large scale single page JavaScript application
 This books will try to describe how to develop a large scale JavaScript Single Page Application.
 As diagram 1 suggests SPA became a huge trend in 2012 even though the term was coined by Steven Yen back in 2005. Developing SPAs is radically different than developing traditional web applications because of the nature of the client side env’, the dynamic and flexible DNA of the JavaScript programming language and the novelty of tools and frameworks that enhance/modify the development process. Hence experienced R&D managers mostly have little experience with this type of development, in addition they have valid concerns regarding managing large scale JavaScript project. 
 In this book we will try to come up with solutions and recipes regarding how to manage and develop an SPA or even a generic large scale JavaScript project effectively.
+![Diagram 1: Single Page Application over Google Trends (December 2012)](https://raw.github.com/eladmoshe/JavaScript-cookbook/master/images/SPA-GoogleTrendDec2012.png)
+
+
 
 
 #Education
