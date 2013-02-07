@@ -57,10 +57,82 @@ In general, the model
 
 ## JavaScript Frameworks
 In recent years many JavaScript framworks appeared to help developers better structure JavaScript applications. Choosing frameworks is therefore not an easy task. 
-For HP MaaS platform the following frameworks were selected:
-Backbone.js - MV* frameworks
-Backbone.Marionette - Complements many features which lack in backbone.js
-Handlebars.js - Template engine
+In the following section we describe the frameworks that were selected for HP MaaS.
+
+#### Backbone.js
+Backbone is an MV* framework that provides both structure and infrastructure implementation. Backbone’s main classes are Model, Collection, View and Router.
+###### Model
+_“Backbone Models are the heart of any JavaScript application, containing the interactive data as well as a large part of the logic surrounding it: conversions, validations, computed properties, and access control“_ (By backbone.js authors definition). Model object could  be saved to or retrieved from the server using standard REST API. 
+Model definition example: 
+```javascript
+// We extend the Backbone.Model prototype to build our own
+var Project= Backbone.Model.extend({
+   // default values of attributes
+  defaults : {
+    name : null,
+    id: null,
+    PO : null
+  },
+   url : function() {
+    //  relative URL where the model's resource would be located on the server
+    // In this case, POST to '/donuts' and PUT to '/donuts/:id'
+    return this.id ? '/projects/' + this.id : '/projects'; 
+  }
+});
+```
+###### Collection
+A collection is an ordered set for models. The collection could be notified on adding new / deletion /modification of model item.
+
+###### View
+A Backbone View is designed to encapsulate a DOM element’s functionality .All the logic of the client side application should be within the appropriate View. A view combines both the Controller and the View of MVC, therefore handling and responding both user input and the application output. It is in charge to update the model due to ui changes and vise versa to update the DOM when the model changes.
+The view has a property called template, which defines how this View is rendered in the DOM. Backbone is flexible and let the developer to choose his preferred method of HTML templating. Our templating engine is Jade (to be described later).
+```javascript
+ProjectView = Backbone.View.extend({
+         tagName : "div",   //instance of CarView it will be created inside div element
+         template: '#tpl-project-settings', //name of the template file to be used for DOM         
+ 
+         //core function of Backbone.View - is where you tell your view how to render itself.
+         render : function() { 
+            //renders the view template from model data, and updates this.el with the new HTML
+            $(this.el).innerHTML = this.model.get('name'); 
+            return this;
+        }
+   });
+ 
+   var BDD = new Project ({
+         name : "BDD Project"
+   });
+ 
+   var BDDView = new ProjectView({
+        model : BDD //specify view model 
+   });
+ 
+   BDDView.render();
+```
+
+###### Router
+A Backbone Router is the facility that allows to implement a Single Page Application (SPA).
+
+
+## UI, templates, styling and widgets
+In todays web application the client side get more and more responsibility and a lot of logic is being moved to the client side, the delay of a round trip between the client and the server, making the Web application more responsive.
+As web applications move farther into the client, Javascript frameworks have sprung up that operate on a higher level of abstraction than DOM manipulation frameworks like jQuery.
+
+Web apps must offer simple, intuitive and responsive user interfaces that let their users get things done with less effort and time.
+There are a wide varied range of Web UI front-end frameworks for design web apps. There are few main aspects to consider choosing UI front-end framework: Look & Feel that it provides , simplicity of usage, community and documentation, supports all major browsers...
+In Storm we choose to use Twitter Bootstrap toolkit, that currently is one of the leading ui toolkits in the web.
+
+Another choice that the web application developer should make is what template engine he would like to use.The template engine produces a pure HTML web page by processing the web template source file along with data from a database.Including template engine in the web application developing process supports dynamic content, allows separation of concern - separate presentation from content, allows reuse of ui sections...
+For template engine we choose NodeJS template engine “Jade”. 
+Other template engines that are popular those days:handlebars.js, mustache.js
+
+## i18n, l10n, ARIA and maybe RTL
+JavaScript i18n (and the rest) support can be implemented on three levels. The server may do the replacement of strings sending the client a compiled and fully functional HTML. This approach is similar to PHP. Another approach is to replace the strings during the template rendering (as most templating engine must take some data source as an argument). This allows the client to control which strings will be replaced and when but requires the loading of the resources files into the client memory. The third approach is to replace the strings on the final DOM. Once the HTML is rendered the strings are replaced on the client using the loaded resources. The three methods are not mutually exclusive and therefore it is possible to use all three in a single application. In Storm we use a mix of the second and third approaches via the i18next library. In most cases the strings are replaced after the element DOM is created but just before it is rendered to the main DOM.
+
+Widgets and CSS must be RTL aware (e.g. location of scroll bar, layout direction, etc)
+
+
+
 
 
 
