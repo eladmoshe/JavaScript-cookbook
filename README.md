@@ -20,6 +20,12 @@ A cookbook for developing a large scale single page JavaScript application
   5.Extensibility approach
   6.How to start
 
+#Introduction
+This books will try to describe how to develop a large scale JavaScript Single Page Application.
+As diagram 1 suggests SPA became a huge trend in 2012 even though the term was coined by Steven Yen back in 2005. Developing SPAs is radically different than developing traditional web applications because of the nature of the client side env’, the dynamic and flexible DNA of the JavaScript programming language and the novelty of tools and frameworks that enhance/modify the development process. Hence experienced R&D managers mostly have little experience with this type of development, in addition they have valid concerns regarding managing large scale JavaScript project. 
+In this book we will try to come up with solutions and recipes regarding how to manage and develop an SPA or even a generic large scale JavaScript project effectively.
+
+
 #Education
 
 ## Self-training
@@ -112,6 +118,40 @@ ProjectView = Backbone.View.extend({
 
 ###### Router
 A Backbone Router is the facility that allows to implement a Single Page Application (SPA).
+In SPA, as far as the browser concerns, the navigation to the application’s page occurs only once, when the user navigates to the application for the first time. At this stage, the entire application is loaded to the memory of the browser. Any links (hrefs) in the application begins with a “#” sign. The browser parses everything that comes after the “#” sign as internal page navigation and therefore doesn’t send any request to server. However, the Backbone Router intercepts this action, and invoke the method that is registered to that url. During page load, after the application has finished creating all of its routers, call to Backbone.history.start() should be done to to  subscribed to the browser’s hashchange event*. Whenever the hash changes, Backbone.history takes care of running your Router’s function.
+Backbone.history is where Backbone stores all of the places you’ve been. This is necessary in order to not break the back button in your browser.
+```javascript
+var AppRouter = Backbone.Router.extend({
+        routes: {
+            "help":                 "help",    // #help
+            "search/:projectName":  "search"  // #search/MyProj           
+         },
+ 
+         help: function() {
+             ...
+         },
+ 
+         search: function(projectName) {
+             ...
+         }
+    });
+    // Initiate the router
+    var app_router = new AppRouter;
+ 
+    // Start Backbone history a necessary step for bookmarkable URL's
+    Backbone.history.start();
+```
+
+#### Backbone.Marionette
+To simplify the construction of large scale JS application we choose to use Marionette.js, which is composite application library for Backbone.js.
+Marionette is a collection of common design and implementation patterns. It provides a lot of boilerplate code (i.e. identical code that needs to be written for many application) for Backbone, built-in memory management and views garbage collector, extends Backbone.View with additional View implementations(LayoutView, ItemView) which helps to create neat implementations and much more. Have a look at the sample application and Marionette website for details. 
+
+#### Handlebars - TODO
+
+#### JSLint (JSHint)
+JSLint is a code quality and validation tool.JSLint takes a JavaScript source and scans it. If it finds a problem, it returns a message describing the problem and an approximate location within the source. The problem is not necessarily a syntax error, although it often is. JSLint looks at some style conventions as well as structural problems (It does not prove that your program is correct functionally).
+JSHint is a fork of JSLint which is community driven, rather than controlled by a single, opinionated person (Douglas Crockford). It allows more flexability in rules customizations compared to JSLint.
+
 
 
 ## UI, templates, styling and widgets
@@ -131,7 +171,18 @@ JavaScript i18n (and the rest) support can be implemented on three levels. The s
 
 Widgets and CSS must be RTL aware (e.g. location of scroll bar, layout direction, etc)
 
+# References for Further Education
 
+## Books and articles
+* "JavaScript: The Good Parts" by Duglas Crockford - must read
+* "Maintainable JavaScript" by Nicholas C. Zakas - good practical tips on JS development
+* "Learning JavaScript Design Patterns" by Addy Osmani - very good one
+* "Secrets of the JavaScript Ninja" by John Resig and Bear Bibeault - from author of jQuery library
+* “Backbone Fundamentals” by Addy Osmani - publically available ebook visit github to follow and get your copy.
+
+## Recommended Blogs 
+* "ECMA-262" by Dmitry Soshnikov - lots of low level JS staff
+* Articles for Developers by Addy Osmani
 
 
 
