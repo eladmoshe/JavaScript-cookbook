@@ -242,11 +242,11 @@ Widgets and CSS must be RTL aware (e.g. location of scroll bar, layout direction
 * "Maintainable JavaScript" by Nicholas C. Zakas - good practical tips on JS development
 * "Learning JavaScript Design Patterns" by Addy Osmani - very good one
 * "Secrets of the JavaScript Ninja" by John Resig and Bear Bibeault - from author of jQuery library
-* “Backbone Fundamentals” by Addy Osmani - publically available ebook visit github to follow and get your copy.
+* “Backbone Fundamentals” by Addy Osmani - publically available ebook visit [github](https://github.com/addyosmani/backbone-fundamentals) to follow and get your copy.
 
 ## Recommended Blogs 
-* "ECMA-262" by Dmitry Soshnikov - lots of low level JS staff
-* Articles for Developers by Addy Osmani
+* ["ECMA-262"](http://dmitrysoshnikov.com/) by Dmitry Soshnikov - lots of low level JS staff
+* [Articles for Developers](http://addyosmani.com/blog/) by Addy Osmani
 
 
 
